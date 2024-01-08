@@ -1,0 +1,68 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calcOutline{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 600px;
+    height: 800px;
+    border: solid 20px gray;
+    background-color: blanchedalmond;
+
+
+}
+.display{
+    width: 550px;
+    height: 200px;
+    border: solid 10px gray;
+    border-radius: 10px;
+    margin:40px;
+    text-align: end;
+    background-color: black;
+    color: white;
+    overflow: hidden;
+
+}
+
+.currentDisplay{
+    font-size: 80px;
+}
+.pastDisplay{
+    font-size: 40px;
+    height: 50px;
+}
+
+.btnContainer{
+    display:flex;
+    height: 600px;
+
+
+}
+.numbers{
+    width: 400px;
+    margin-top:70px;
+
+}
+.operators{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.operator, .num, .blank{
+    width: 100px;
+    height: 60px;
+    font-size: 25px;
+    font-weight: 600;
+    margin: 5px;
+    border-radius: 10px;
+
+}
+
+.operator:hover, .num:hover{
+    cursor: pointer;
+}
