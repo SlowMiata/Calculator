@@ -114,9 +114,10 @@ if (clickedButton.classList.contains('num') || clickedButton.classList.contains(
     if(hasFirstNum === false && clickedButton.classList.contains('num')){
         firstNum += buttonValue
         currentDisplay.textContent = firstNum
+        hasFirstNum = true
     }
     //the user has enter the operator
-    if(hasCurrOperator === false && clickedButton.classList.contains('op')){
+    if(hasFirstNum === true && hasCurrOperator === false && clickedButton.classList.contains('op')){
         currOperator = buttonValue
         //declares that the first number has been inputted and the operator has been entered
         hasCurrOperator = true
