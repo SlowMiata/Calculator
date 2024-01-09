@@ -1,43 +1,31 @@
-const add = function(...nums) {
-    if(nums.length === 0){
-    return 0
-    }
-
-    let result = nums.reduce((sum, current) => sum + current, 0);
-
-    return result
-    //return a + b
+const display = document.querySelector(".display")
+const currentDisplay = document.querySelector('.currentDisplay')
+const pastDisplay = document.querySelector('.pastDisplay')
+const equal = document.querySelector(".equal")
+const clear = document.querySelector('.clear')
 
 
+
+const add = function(a,b) {
+
+    return a + b
 };
 
-const subtract = function(...nums) {
-    if (nums.length === 0){
-        return 0
-    }
-    let result = nums.reduce((diff, current) => diff - current);
-
-    return result
-
-    //return a - b
+const subtract = function(a,b) {
+    return a - b
     
 };
 
-const sum = function(nums) {
+const multiply = function(a,b) {
+    return a*b
 
-
-    let result = nums.reduce((sum, current) => sum + current, 0);
-
-    return Number(result)
-    
 };
-
-const multiply = function(nums) {
-
-    return nums.reduce((total, current) => total * current, 1);
+const divide = function(a,b) {
+    return a/b
 
 };
 
+//not used right now, maybe later on
 const power = function(a,b) {
 
     return Math.pow(a,b)
@@ -52,47 +40,133 @@ const factorial = function(a) {
     }
 
     return total
-
 }
 
-let equation
+let currOperator = ''
+let firstNum = ''
+let secondNum = ''
+let hasCurrOperator = false
+let hasFirstNum = false
+let HasSecondNum = false
 
 
-const display = document.querySelector(".display")
-const currentDisplay = document.querySelector('.currentDisplay')
-const pastDisplay = document.querySelector('.pastDisplay')
-const equal = document.querySelector(".equal")
+const operate = function(first,operator,second){
 
-const clear = document.querySelector('.clear')
+    let ans = 0
+
+    first = Number(first)
+    second = Number(second)
+
+    if(operator === "+"){
+        //call add
+        return add(first,second)
+
+    }else if (operator === "-"){
+        //call sub
+        return subtract(first,second)
+
+    }else if (operator === "x"){
+        //call multi
+        return multiply(first,second)
+
+    }else if (operator === "/"){
+        //call divide
+        if(second == 0){
+            return 'error'
+        }
+        return divide(first,second)
+
+    }
+
+    return ans
+}
 
 
+
+//to clear the display and reset all saved values
 clear.addEventListener('click', ()=>{
     currentDisplay.textContent = ""
     pastDisplay.textContent = ""
+    currOperator = ''
+    firstNum = ''
+    secondNum = ''
+    hasCurrOperator = false
+    hasFirstNum = false
+    HasSecondNum = false
+
+
 })
 
+//stores the last input button
 let buttonValue
+
 
 const btnContainer = document.querySelector('.btnContainer');
 btnContainer.addEventListener('click', function(event) {
     const clickedButton = event.target;
 
-// Check if the clicked element is a button
+
+// Check if a num or op button is clicked
 if (clickedButton.classList.contains('num') || clickedButton.classList.contains('op')) {
     buttonValue = clickedButton.textContent;
+    
+    //check if it the first number has been inputted if not append the value the first number
+    if(hasFirstNum === false && clickedButton.classList.contains('num')){
+        firstNum += buttonValue
+        currentDisplay.textContent = firstNum
+    }
+    //the user has enter the operator
+    if(hasCurrOperator === false && clickedButton.classList.contains('op')){
+        currOperator = buttonValue
+        //declares that the first number has been inputted and the operator has been entered
+        hasCurrOperator = true
+        hasFirstNum = true
+    }
+    //changes the operator
+    if(hasCurrOperator === true && clickedButton.classList.contains('op') && hasFirstNum === true & HasSecondNum === false){
+        currOperator = buttonValue
+    }
+    //adds in the second number
+    if(hasCurrOperator === true && clickedButton.classList.contains('num') && hasFirstNum === true){
 
-    // Do something based on the button value or class
-    currentDisplay.textContent += buttonValue
-    equation = currentDisplay.textContent
+        secondNum += buttonValue
+        currentDisplay.textContent = ''
+        currentDisplay.textContent = secondNum
+        HasSecondNum = true
+        
+    }
 
+    if(hasCurrOperator === true && clickedButton.classList.contains('op') && hasFirstNum === true & HasSecondNum === true){
+        //save the answer as the first op
+        //currOperator = buttonValue
+        currentDisplay.textContent = operate(firstNum,currOperator,secondNum)
+        firstNum = currentDisplay.textContent
+        currOperator = buttonValue
+        secondNum = ''
+        HasSecondNum = false
+    }
     
 }
 });
 
 
 equal.addEventListener('click',()=>{
-    
-    pastDisplay.textContent = currentDisplay.textContent
-    currentDisplay.textContent = ''
+    //make pasDisplay = answer
+    pastDisplay.textContent = ''
+    if(HasSecondNum === false){
+        currentDisplay.textContent = firstNum
+    }
+    else{
+        currentDisplay.textContent = operate(firstNum,currOperator,secondNum)
+        firstNum = currentDisplay.textContent
+        hasCurrOperator = false
+        currOperator = ''
+        HasSecondNum = false
+        secondNum = ''
+
+    }
+
 })
+
+
 
